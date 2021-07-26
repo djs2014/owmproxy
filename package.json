@@ -1,0 +1,27 @@
+{
+  "name": "owmproxy",
+  "version": "1.0.0",
+  "description": "Open Weather Map proxy to minimize the one call payload. Needed for the connect IQ datafield `What Weather OWM`.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "owmproxy"
+  },
+  "keywords": [
+    "Open",
+    "Weather",
+    "Map",
+    "connect",
+    "IQ",
+    "datafield"
+  ],
+  "author": "Dirk Speelman",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^3.19.2",
+    "node-fetch": "^2.6.1"
+  }
+}
