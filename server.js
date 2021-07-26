@@ -10,10 +10,19 @@ const fastify = require("fastify")({
 });
 
 fastify.get("/", async function (request, reply) {
-    //console.log('HTTP trigger function processed a request: ' + request.url);
-    //fastify.log.info('HTTP trigger function processed a request: ' + request.url);
+    console.log('HTTP trigger function processed a request: ' + request.url);
+    fastify.log.info('HTTP trigger function processed a request: ' + request.url);
     try {
         let queryString = request.url.split('?').splice(1).join('?');
+        
+        // lat, lon, appid must exist
+        if (!request.query.lat || !request.query.lon || !request.query.appid) {
+            reply.statusCode = 400;
+            reply.send("missing parameters lat,lon,appid");    
+            return;
+        }
+
+
         let uri = API_SERVICE_URL + '?' + queryString;
 
         let fetchResp = await fetch(uri);
@@ -28,9 +37,20 @@ fastify.get("/", async function (request, reply) {
     }
 });
 
+async function closeGracefully(signal) {
+    console.log(`*^!@4=> Received signal to terminate: ${signal}`)
+  
+    await fastify.close()
+    // await db.close() if we have a db connection in this app
+    // await other things we should cleanup nicely
+    process.exit()
+}
+
+process.on('SIGINT', closeGracefully)
+process.on('SIGTERM', closeGracefully)
 
 // Run the server and report out to the logs
-fastify.listen(process.env.PORT, function (err, address) {
+fastify.listen(process.env.PORT || 3000, function (err, address) {
     if (err) {
         fastify.log.error(err);
         process.exit(1);
