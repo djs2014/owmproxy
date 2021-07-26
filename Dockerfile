@@ -11,6 +11,8 @@ COPY --chown=node:node . .
 # If you are building your code for production
 RUN npm ci --only=production
 
+EXPOSE 3000
+
 USER node
 #CMD [ "node", "server.js" ]
 CMD ["dumb-init", "node", "server.js"]
